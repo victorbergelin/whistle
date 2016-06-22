@@ -61,10 +61,9 @@ int main()
 
 			//			cout << count <<endl;
 			count++;					// Incrementing Number of frames
-
 			/* Insert your processing code here*/
 
-			fwrite(buff16,1,nb,outfile);			// Writing read data into output file
+			// fwrite(buff16,1,nb,outfile);			// Writing read data into output file
 		}
 		cout << sizeof(buff16) << endl;
 		cout << " Number of frames in the input wave file are " <<count << endl;
