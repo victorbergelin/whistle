@@ -27,13 +27,16 @@ typedef struct header_file
 typedef struct header_file* header_p;
 
 
+bool detect(short int buff16[])
+{
+	cout << buff16[0] << endl;
+}
+
 
 
 int main()
-
 {
 	FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
-	FILE * outfile = fopen("Output.wav","wb");		// Create output ( wave format) file in write mode
 
 	int BUFSIZE = 7168;
 
@@ -44,7 +47,6 @@ int main()
 	if (infile)
 	{
 		fread(meta, 1, sizeof(header), infile);
-		fwrite(meta,1, sizeof(*meta), outfile);
 		cout << " Size of Header file is "<<sizeof(*meta)<<" bytes" << endl;
 		cout << " Sampling rate of the input wave file is "<< meta->sample_rate <<" Hz" << endl;
 		cout << " Number of samples in wave file are " << meta->subchunk2_size << " samples" << endl;
@@ -62,8 +64,7 @@ int main()
 			//			cout << count <<endl;
 			count++;					// Incrementing Number of frames
 			/* Insert your processing code here*/
-
-			// fwrite(buff16,1,nb,outfile);			// Writing read data into output file
+			a = detect(buff16);
 		}
 		cout << sizeof(buff16) << endl;
 		cout << " Number of frames in the input wave file are " <<count << endl;
