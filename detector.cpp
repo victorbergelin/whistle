@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include "opencv2/opencv.hpp"
+// #include "opencv2/opencv.hpp"
 
 using namespace std;
 
@@ -29,7 +29,11 @@ typedef struct header_file* header_p;
 
 bool detect(short int buff16[])
 {
-	cout << buff16[0] << endl;
+	int length = (sizeof(buff16)/sizeof(*buff16));
+//	int i = 0;
+
+	for (int i = 0; i >= length; i++) 
+		cout << buff16[i] << endl;
 }
 
 
@@ -59,7 +63,7 @@ int main()
 			nb = fread(buff16,1,BUFSIZE,infile);		// Reading data in chunks of BUFSIZE
 
 			// OPEN CV operations on each chunk
-
+			bool a;
 
 			//			cout << count <<endl;
 			count++;					// Incrementing Number of frames
