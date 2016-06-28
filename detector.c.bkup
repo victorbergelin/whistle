@@ -1,9 +1,11 @@
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include "opencv2/opencv.hpp"
 
 using namespace std;
+using namespace cv;
 
 int BUFSIZE = 7168;
 
@@ -29,12 +31,45 @@ typedef struct header_file* header_p;
 
 bool detect(short int buff16[])
 {
-	// cout << buff16 << endl;
-	short int dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-	cv::Mat dummy_query = cv::Mat(1, BUFSIZE, CV_16S, buff16);
+	// Convert to Mat:
+	cv::Mat data_mat = cv::Mat(1, BUFSIZE, CV_16S, buff16);
+	
+	if(data_mat.empty())
+		return -1;
 
-	cout << dummy_query.at<short int>(0,2) << endl;
-	cout << dummy_query << endl;
+	// Size:
+	/* 
+	cv::Size s = data_mat.size();
+	int rows = s.height;
+	int cols = s.width;
+	*/ 
+
+	  
+	// DFT:
+	cv::Mat planes[] = {Mat_<float>(data_mat), Mat::zeros(data_mat.size(), CV_32F)};
+	cv::Mat complexI;
+	merge(planes, 2, complexI); 
+	cv::dft(complexI, complexI);
+
+	split(complexI, planes);                   	// planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
+	magnitude(planes[0], planes[1], planes[0]);	// planes[0] = magnitude
+	Mat magI = planes[0];
+
+	cv::Size s = magI.size();
+	int rows = s.height;
+	int cols = s.width;
+
+	cout << rows << " " << cols << endl; // " " << magI <<  endl; 
+	// magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
+	// dummy_query.at<short int>(0,2) << endl;
+	// cout << dummy_query << endl;
+
+	// save DFT:
+	ofstream myfile;
+	myfile.open ("example.csv");
+	myfile << magI;
+	myfile.close();
+
 
 	/*
 	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
