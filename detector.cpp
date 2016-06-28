@@ -29,7 +29,7 @@ typedef struct header_file* header_p;
 
 bool detect(short int buff16[])
 {
-	cout << buff16[0] << endl;
+	cout << buff16 << endl;
 }
 
 
@@ -64,7 +64,7 @@ int main()
 			//			cout << count <<endl;
 			count++;					// Incrementing Number of frames
 			/* Insert your processing code here*/
-			a = detect(buff16);
+			bool a = detect(buff16);
 		}
 		cout << sizeof(buff16) << endl;
 		cout << " Number of frames in the input wave file are " <<count << endl;
