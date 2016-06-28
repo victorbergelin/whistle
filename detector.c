@@ -134,7 +134,8 @@ int main()
 	cout << dummy_query.at<float>(0,2) << endl;
 	cout << dummy_query << endl;
 
-	FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
+	// FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
+	FILE * infile = fopen("whistle2.wav","rb");		// Open wave file in read mode
 
 
 
