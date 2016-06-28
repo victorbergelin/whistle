@@ -5,7 +5,7 @@
 #include "opencv2/opencv.hpp"
 
 using namespace std;
-
+using namespace cv;
 int BUFSIZE = 7168;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
@@ -33,26 +33,33 @@ bool detect(short int buff16[])
 	int array_length = BUFSIZE;
 
 	// *** how to build filter opencv c++
+	
+	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	Mat dummy_query = Mat(2, 4, CV_32F, dummy_query_data);
+
+	cout << dummy_query.at<float>(0,2) << endl;
+	cout << dummy_query << endl;
 
 	// 1. transform buff16 to fft
 	// 2. filter fft
 	// 3. classify signal from condition
 	
-	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
-	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
+	// float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	// cv::Mat dummy_query = cv::Mat(BUFSIZE, 1, CV_32S,buff16); // CV_32F
 
-	cout << dummy_query.at<float>(0,2) << endl;
-	cout << dummy_query << endl;
+	// cout << dummy_query.at<float>(0,2) << endl;
+	// cout << dummy_query << endl;
 
 	// features:
 	// MAX VALUE:
-
+	/*
 	cout << "-------------------------------------"  << endl;
 	int i = 0;
 
 	for (int i = 0; i <= array_length; i++) {
 		cout << i << ", " << buff16[i] << endl;
 	}
+	*/
 	return 0;
 }
 
