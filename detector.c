@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cv;
 
-int BUFSIZE = 7168;
+int BUFSIZE = 71680;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
 typedef struct header_file
@@ -31,7 +31,9 @@ typedef struct header_file* header_p;
 
 // create a 2-channel butterworth low-pass filter with radius D, order n
 // (assumes pre-aollocated size of dft_Filter specifies dimensions)
-void create_butterworth_lowpass_filter(Mat &dft_Filter, int D, int n)
+/* 
+
+   void create_butterworth_lowpass_filter(Mat &dft_Filter, int D, int n)
 {
 	Mat tmp = Mat(dft_Filter.rows, dft_Filter.cols, CV_32F);
 
@@ -54,6 +56,7 @@ void create_butterworth_lowpass_filter(Mat &dft_Filter, int D, int n)
 	Mat toMerge[] = {tmp, tmp};
 	merge(toMerge, 2, dft_Filter);
 }
+*/
 
 bool detect(short int buff16[])
 {
@@ -107,7 +110,7 @@ bool detect(short int buff16[])
 	// FILTER: 
 		//dft(complexImg, complexImg);
 		// construct the filter (same size as complex image)
-
+/*
 	filter = complexI.clone();
 	create_butterworth_lowpass_filter(filter, radius, order);
 
@@ -119,7 +122,7 @@ bool detect(short int buff16[])
 	// create magnitude spectrum for display
 
 	mag = create_spectrum_magnitude_display(complexImg, true);
-
+*/
 
 }
 
