@@ -26,16 +26,19 @@ typedef struct header_file
 
 typedef struct header_file* header_p;
 
-
-bool detect(short int buff16[],length = )
+bool detect(short int buff16[])
 {
 	cout << buff16 << endl;
 }
 
-
-
 int main()
 {
+	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
+
+	cout << dummy_query.at<float>(0,2) << endl;
+	cout << dummy_query << endl;
+
 	FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
 
 	int BUFSIZE = 7168;
@@ -57,18 +60,13 @@ int main()
 		while (!feof(infile))
 		{
 			nb = fread(buff16,1,BUFSIZE,infile);		// Reading data in chunks of BUFSIZE
-
-			// OPEN CV operations on each chunk
-
-
-			//			cout << count <<endl;
 			count++;					// Incrementing Number of frames
-			/* Insert your processing code here*/
 			bool a = detect(buff16);
 		}
 		cout << sizeof(buff16) << endl;
 		cout << " Number of frames in the input wave file are " <<count << endl;
 	}
+
 	return 0;
 }
 

@@ -1,10 +1,11 @@
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include "opencv2/opencv.hpp"
 
 using namespace std;
+
+int BUFSIZE = 7168;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
 typedef struct header_file
@@ -26,27 +27,34 @@ typedef struct header_file
 
 typedef struct header_file* header_p;
 
-
 bool detect(short int buff16[])
 {
-	cout << buff16 << endl;
+	// cout << buff16 << endl;
+	short int dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	cv::Mat dummy_query = cv::Mat(1, BUFSIZE, CV_16S, buff16);
+
+	cout << dummy_query.at<short int>(0,2) << endl;
+	cout << dummy_query << endl;
+
+	/*
+	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
+
+	cout << dummy_query.at<float>(0,2) << endl;
+	cout << dummy_query << endl; */
 }
-
-
 
 int main()
 {
-
 	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
 
 	cout << dummy_query.at<float>(0,2) << endl;
 	cout << dummy_query << endl;
-/*
 
 	FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
 
-	int BUFSIZE = 7168;
+
 
 	int count = 0;						// For counting number of frames in wave file.
 	short int buff16[BUFSIZE];				// short int used for 16 bit as input data format is 16 bit PCM audio
@@ -77,7 +85,6 @@ int main()
 		cout << " Number of frames in the input wave file are " <<count << endl;
 	}
 
-	*/
 	return 0;
 }
 
