@@ -29,6 +29,32 @@ typedef struct header_file
 
 typedef struct header_file* header_p;
 
+// create a 2-channel butterworth low-pass filter with radius D, order n
+// (assumes pre-aollocated size of dft_Filter specifies dimensions)
+void create_butterworth_lowpass_filter(Mat &dft_Filter, int D, int n)
+{
+	Mat tmp = Mat(dft_Filter.rows, dft_Filter.cols, CV_32F);
+
+	Point centre = Point(dft_Filter.rows / 2, dft_Filter.cols / 2);
+	double radius;
+
+	// based on the forumla in the IP notes (p. 130 of 2009/10 version)
+	// see also HIPR2 on-line
+
+	for(int i = 0; i < dft_Filter.rows; i++)
+	{
+		for(int j = 0; j < dft_Filter.cols; j++)
+		{
+			radius = (double) sqrt(pow((i - centre.x), 2.0) + pow((double) (j - centre.y), 2.0));
+			tmp.at<float>(i,j) = (float)
+				( 1 / (1 + pow((double) (radius /  D), (double) (2 * n))));
+		}
+	}
+
+	Mat toMerge[] = {tmp, tmp};
+	merge(toMerge, 2, dft_Filter);
+}
+
 bool detect(short int buff16[])
 {
 	// Convert to Mat:
@@ -62,19 +88,39 @@ bool detect(short int buff16[])
 	cout << rows << " " << cols << endl; // " " << magI <<  endl; 
 	// NOT NEEDED // magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
 
-	// save DFT:
+	// Save DFT:
 	ofstream myfile;
 	myfile.open ("dft.csv");
 	myfile << magI;
 	myfile.close();
 
-
+	// PLOT results
 	/*
+	
 	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
 
 	cout << dummy_query.at<float>(0,2) << endl;
 	cout << dummy_query << endl; */
+
+	// ---------------
+	// FILTER: 
+		//dft(complexImg, complexImg);
+		// construct the filter (same size as complex image)
+
+	filter = complexI.clone();
+	create_butterworth_lowpass_filter(filter, radius, order);
+
+	// apply filter
+	shiftDFT(complexImg);
+	mulSpectrums(complexImg, filter, complexImg, 0);
+	shiftDFT(complexImg);
+
+	// create magnitude spectrum for display
+
+	mag = create_spectrum_magnitude_display(complexImg, true);
+
+
 }
 
 int main()
