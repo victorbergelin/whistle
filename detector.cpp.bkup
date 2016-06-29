@@ -7,6 +7,7 @@
 using namespace std;
 using namespace cv;
 
+const char* FILENAME = "Sound/whistle_boing.wav";
 int BUFSIZE = 716800;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
@@ -75,9 +76,9 @@ bool detect(short int buff16[])
 	// ---------------
 	// Find peaks in frequencies of magI: 
 
-
-
-
+	// 1. separate frequences in 1.5-2kHz band
+	
+	// 2. look at strong contineus signal
 
 }
 
@@ -92,7 +93,7 @@ int main()
 	// ---------
 	
 	// FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
-	FILE * infile = fopen("whistle1.wav","rb");		// Open wave file in read mode
+	FILE * infile = fopen(FILENAME,"rb");		// Open wave file in read mode
 
 
 
