@@ -7,10 +7,10 @@
 using namespace std;
 using namespace cv;
 
-// const char* FILENAME = "Sound/whistle_boing.wav";
-const char* FILENAME = "Sound/whistle1.wav";
+const char* FILENAME = "Sound/whistle_boing.wav";
+// const char* FILENAME = "Sound/boing48.wav";
 
-int BUFSIZE = 716800;
+int BUFSIZE = 7168;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
 typedef struct header_file
@@ -80,6 +80,12 @@ bool detect(short int buff16[])
 
 	// 1. separate frequences in 1.5-2kHz band
 	
+
+
+	//    for (int index = 0; index < vec.size(); index++)
+	//	            data.col(vec[index]).copyTo(subData.col(index)); 
+	    //loop over the vector, copy the data from vec[index] column to subData[index]
+	    
 	// 2. look at strong contineus signal
 
 }
