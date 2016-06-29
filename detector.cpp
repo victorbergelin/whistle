@@ -37,7 +37,6 @@ typedef struct header_file
 
 typedef struct header_file* header_p;
 
-
 bool detect(short int buff16[])
 {
 	// Convert to Mat:
@@ -52,7 +51,6 @@ bool detect(short int buff16[])
 	int rows = s.height;
 	int cols = s.width;
 	*/ 
-
 	  
 	// DFT:
 	cv::Mat planes[] = {Mat_<float>(data_mat), Mat::zeros(data_mat.size(), CV_32F)};
@@ -72,10 +70,6 @@ bool detect(short int buff16[])
 	
 	cout << rows << ", " << cols << endl;
 
-	// Mat magIcrop = magI;
-	// const cv::Range range = Range(0,crop);
-	// magI(range).copyTo(magIcrop);
-	
 	//Range rAll = Range::all();
 	Range rCrop = Range(0,crop);
 	Mat *magIcrop = new Mat(magI.t() , rCrop); 
@@ -92,10 +86,19 @@ bool detect(short int buff16[])
 
 	// ---------------
 	// Find peaks in frequencies of magI: 
-
+	//
 	// 1. separate frequences in 1.5-2kHz band
 	
+	int minFreqCrop = 0.474*BUFSIZE/2;
+	int maxFreqCrop = 0.558*BUFSIZE/2;
 
+	Range rCropRange = Range(minFreqCrop,maxFreqCrop);
+	Mat *magIcrop2 = new Mat(magI.t() , rCropRange);
+	Mat magI2(*magIcrop2);
+
+	Scalar mean = cv::mean(magII);
+	Scalar mean2 = cv::mean(magI2);
+	cout << "CROP DATA\n" << magI2.size() << ", " << magII.size() << ", " << mean << ", " << mean2 << endl;
 
 	//    for (int index = 0; index < vec.size(); index++)
 	//	            data.col(vec[index]).copyTo(subData.col(index)); 
