@@ -87,14 +87,17 @@ bool detect(short int buff16[])
 	cv::Size s = magI.size();
 	int rows = s.height;
 	int cols = s.width;
+	int crop = cols/2;
 
-	cout << rows << " " << cols << endl; // " " << magI <<  endl; 
+	// cout << rows << " " << cols << endl; // " " << magI <<  endl; 
 	// NOT NEEDED // magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
 
 	// Save DFT:
+		// cv::Range range = magI(0,crop);
 	ofstream myfile;
 	myfile.open ("dft.csv");
 	myfile << magI;
+		// myfile << magI(cv::Rect(0, 3608));
 	myfile.close();
 
 	// PLOT results
