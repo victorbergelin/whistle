@@ -7,7 +7,12 @@
 using namespace std;
 using namespace cv;
 
-const char* FILENAME = "Sound/whistle1.wav";
+// const char* FILENAME = "Sound/whistle1.wav";
+// const char* FILENAME = "Sound/whistle2.wav";
+// const char* FILENAME = "Sound/whistle3.wav";
+// const char* FILENAME = "Sound/whistle4.wav";
+const char* FILENAME = "Sound/whistle5.wav";
+//const char* FILENAME = "Sound/whistle1.wav";
 // const char* FILENAME = "Sound/boing48.wav";
 
 int BUFSIZE = 716800;
@@ -79,7 +84,7 @@ bool detect(short int buff16[])
 	// magI = magI(Range::all());
 	// Save DFT:
 	ofstream myfile;
-	myfile.open ("dft.csv");
+	myfile.open("dft.csv");
 	myfile.setf(std::ios::fixed);
 	// myfile.precision(0);
 	myfile << magII.t();
