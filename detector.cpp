@@ -98,6 +98,7 @@ bool detect(short int buff16[])
 
 	Scalar mean = cv::mean(magII);
 	Scalar mean2 = cv::mean(magI2);
+
 	cout << "CROP DATA\n" << magI2.size() << ", " << magII.size() << ", " << mean << ", " << mean2 << endl;
 
 	//    for (int index = 0; index < vec.size(); index++)
