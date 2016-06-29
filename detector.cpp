@@ -79,7 +79,9 @@ bool detect(short int buff16[])
 	// Save DFT:
 	ofstream myfile;
 	myfile.open ("dft.csv");
-	myfile << *magIcrop;
+	myfile.setf(std::ios::fixed);
+	myfile.precision(0);
+	myfile <<  *magIcrop;
 	myfile.close();
 
 	// ---------------
