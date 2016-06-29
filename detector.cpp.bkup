@@ -10,7 +10,7 @@ using namespace cv;
 const char* FILENAME = "Sound/whistle_boing.wav";
 // const char* FILENAME = "Sound/boing48.wav";
 
-int BUFSIZE = 7168;
+int BUFSIZE = 716800;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
 typedef struct header_file
@@ -59,20 +59,27 @@ bool detect(short int buff16[])
 	magnitude(planes[0], planes[1], planes[0]);	// planes[0] = magnitude
 	Mat magI = planes[0];
 
+	// Size:
 	cv::Size s = magI.size();
 	int rows = s.height;
 	int cols = s.width;
 	int crop = cols/2;
+	
+	cout << rows << ", " << cols << endl;
 
-	// cout << rows << " " << cols << endl; // " " << magI <<  endl; 
-	// NOT NEEDED // magI = magI(Rect(0, 0, magI.cols & -2, magI.rows & -2));
-
+	// Mat magIcrop = magI;
+	// const cv::Range range = Range(0,crop);
+	// magI(range).copyTo(magIcrop);
+	
+	//Range rAll = Range::all();
+	Range rCrop = Range(0,crop);
+	Mat *magIcrop = new Mat(magI.t() , rCrop); 
+	
+	// magI = magI(Range::all());
 	// Save DFT:
-
 	ofstream myfile;
 	myfile.open ("dft.csv");
-	myfile << magI;
-		// myfile << magI(cv::Rect(0, 3608));
+	myfile << *magIcrop;
 	myfile.close();
 
 	// ---------------
