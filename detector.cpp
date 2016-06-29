@@ -7,7 +7,9 @@
 using namespace std;
 using namespace cv;
 
-const char* FILENAME = "Sound/whistle_boing.wav";
+// const char* FILENAME = "Sound/whistle_boing.wav";
+const char* FILENAME = "Sound/whistle1.wav";
+
 int BUFSIZE = 716800;
 
 // WAVE PCM soundfile format (you can find more in https://ccrma.stanford.edu/courses/422/projects/WaveFormat/ )
