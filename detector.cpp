@@ -11,9 +11,9 @@ using namespace cv;
 // const char* FILENAME = "Sound/whistle2.wav";
 // const char* FILENAME = "Sound/whistle3.wav";
 // const char* FILENAME = "Sound/whistle4.wav";
-const char* FILENAME = "Sound/whistle5.wav";
+// const char* FILENAME = "Sound/whistle5.wav";
 //const char* FILENAME = "Sound/whistle1.wav";
-// const char* FILENAME = "Sound/boing48.wav";
+const char* FILENAME = "Sound/boingLoudWhistle3.wav";
 
 int BUFSIZE = 716800;
 
@@ -44,13 +44,6 @@ bool detect(short int buff16[])
 	
 	if(data_mat.empty())
 		return -1;
-
-	// Size:
-	/* 
-	cv::Size s = data_mat.size();
-	int rows = s.height;
-	int cols = s.width;
-	*/ 
 	  
 	// DFT:
 	cv::Mat planes[] = {Mat_<float>(data_mat), Mat::zeros(data_mat.size(), CV_32F)};
@@ -67,26 +60,23 @@ bool detect(short int buff16[])
 	int rows = s.height;
 	int cols = s.width;
 	int crop = cols/2;
-	
-	cout << rows << ", " << cols << endl;
+	// cout << rows << ", " << cols << endl;
 
-	//Range rAll = Range::all();
 	Range rCrop = Range(0,crop);
 	Mat *magIcrop = new Mat(magI.t() , rCrop); 
-	Mat magII(*magIcrop);
+	Mat magIAllFreqs(*magIcrop);
 
-	// magI = magI(Range::all());
 	// Save DFT:
-	ofstream myfile;
+	/*ofstream myfile;
 	myfile.open("dft.csv");
 	myfile.setf(std::ios::fixed);
 	// myfile.precision(0);
 	myfile << magII.t();
 	myfile.close();
+	*/
 
-	// ---------------
+
 	// Find peaks in frequencies of magI: 
-	//
 	// 1. separate frequences in 1.5-2kHz band
 	
 	int minFreqCrop = 0.474*BUFSIZE/2;
@@ -94,61 +84,71 @@ bool detect(short int buff16[])
 
 	Range rCropRange = Range(minFreqCrop,maxFreqCrop);
 	Mat *magIcrop2 = new Mat(magI.t() , rCropRange);
-	Mat magI2(*magIcrop2);
+	Mat magIwhistleFreq(*magIcrop2);
 
-	Scalar mean = cv::mean(magII);
-	Scalar mean2 = cv::mean(magI2);
+	Scalar mean = cv::mean(magIAllFreqs);
+	Scalar meanWhistle = cv::mean(magIwhistleFreq);
 
-	cout << "CROP DATA\n" << magI2.size() << ", " << magII.size() << ", " << mean << ", " << mean2 << endl;
+	
 
-	//    for (int index = 0; index < vec.size(); index++)
-	//	            data.col(vec[index]).copyTo(subData.col(index)); 
-	    //loop over the vector, copy the data from vec[index] column to subData[index]
-	    
-	// 2. look at strong contineus signal
 
+	
+	// Minimum filter? Not needed?
+	double numberWhistle = meanWhistle[0];
+	double number = mean[0];
+
+	cout << "\nCROP DATA\n\nmagIwhistleFreq:" << numberWhistle << ", magIAllFreqs: " << number << endl;
+	
+	if(numberWhistle > number){
+		return 1;
+	} 
+	else {
+		return 0;
+	}
 }
 
 int main()
 {
-	// ---------
+	// --------- test ------- 
+	/*
 	float dummy_query_data[10] = { 1, 2, 3, 4, 5, 6, 7, 8 };
 	cv::Mat dummy_query = cv::Mat(2, 4, CV_32F, dummy_query_data);
 
 	cout << dummy_query.at<float>(0,2) << endl;
 	cout << dummy_query << endl;
+	*/
 	// ---------
 	
-	// FILE * infile = fopen("audio.wav","rb");		// Open wave file in read mode
 	FILE * infile = fopen(FILENAME,"rb");		// Open wave file in read mode
-
-
-
 	int count = 0;						// For counting number of frames in wave file.
 	short int buff16[BUFSIZE];				// short int used for 16 bit as input data format is 16 bit PCM audio
 	header_p meta = (header_p)malloc(sizeof(header));	// header_p points to a header struct that contains the wave file metadata fields
-	int nb;							// variable storing number of byes returned
+	int nb;		
+	bool a = 0;	// variable storing number of byes returned
 	if (infile)
 	{
 		fread(meta, 1, sizeof(header), infile);
+		// Print data headers:
+		/* 
 		cout << " Size of Header file is "<<sizeof(*meta)<<" bytes" << endl;
 		cout << " Sampling rate of the input wave file is "<< meta->sample_rate <<" Hz" << endl;
 		cout << " Number of samples in wave file are " << meta->subchunk2_size << " samples" << endl;
-
+		*/ 
 		// READ Chunks of data
-
-
+			
+		// *** UPDATE?
 		//while (!feof(infile))
 		//{
 			nb = fread(buff16,1,BUFSIZE,infile);		// Reading data in chunks of BUFSIZE
 			count++;					// Incrementing Number of frames
-			bool a = detect(buff16);
+			a = detect(buff16);
 		//}
-		cout << sizeof(buff16) << endl;
-		cout << " Number of frames in the input wave file are " << count << endl;
+		
+		// cout << sizeof(buff16) << endl;
+		// cout << " Number of frames in the input wave file are " << count << endl;
 	}
 
-	return 0;
+	return a;
 }
 
 	// FILTER: 
