@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cv;
 
-const char* FILENAME = "Sound/whistle_boing.wav";
+const char* FILENAME = "Sound/whistle1.wav";
 // const char* FILENAME = "Sound/boing48.wav";
 
 int BUFSIZE = 716800;
