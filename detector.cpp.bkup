@@ -74,14 +74,15 @@ bool detect(short int buff16[])
 	//Range rAll = Range::all();
 	Range rCrop = Range(0,crop);
 	Mat *magIcrop = new Mat(magI.t() , rCrop); 
-	
+	Mat magII(*magIcrop);
+
 	// magI = magI(Range::all());
 	// Save DFT:
 	ofstream myfile;
 	myfile.open ("dft.csv");
 	myfile.setf(std::ios::fixed);
-	myfile.precision(0);
-	myfile <<  *magIcrop;
+	// myfile.precision(0);
+	myfile << magII.t();
 	myfile.close();
 
 	// ---------------
